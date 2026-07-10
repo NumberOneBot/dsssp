@@ -35,11 +35,11 @@ Follow **Intention-Revealing Names** (Clean Code, Robert Martin): names should a
 
 **Keep names compact.** Drop modifiers that add no information given the context. If there is only one graph in scope, it is just `graph` — not `activeGraph` or `currentGraph`. If a boolean describes the only relevant state, name it for the state (`dragging`) not the mechanics (`isCurrentlyDragging`). Shorter names that still answer _"what is this for?"_ are always preferred.
 
-**Keep names uniform with the public API.** The library is driven through its public props, so those are the canonical names — align any internal or derived names to them (`frequency`, `gain`, `q`, `type`). Don't invent synonyms (`freq`, `qFactor`, `dbGain`) for a value that already has a public name.
+**Keep names uniform with the public API.** Match the field names of the types you work with instead of inventing synonyms. `GraphFilter` uses `freq`, `gain`, `q`, `type` — pass a filter's frequency as `freq`, not `frequency` or `qFactor`. (Where a type genuinely uses the full word — e.g. `Magnitude.frequency` — follow that type.)
 
-**Match parameter names to the destination field.** When a parameter is always passed into a specific object property, name it to match that property so shorthand works — e.g. React `key`/`ref`, or any object literal in the body: name the param `frequency` (then `{ frequency }`), not `freq`, which forces `{ frequency: freq }`.
+**Match parameter names to the destination field.** When a parameter is always passed into a specific object property, name it to match that property so shorthand works — e.g. React `key`/`ref`, or a `GraphFilter` field: name the param `freq` (then `{ freq }`), not `frequency`, which forces `{ freq: frequency }`.
 
-**Destructure before repeated access.** When `obj.field` appears 2+ times in a function body, destructure once at the top — `const { frequency, gain, q, type } = filter` — instead of repeating `filter.frequency` at each call site.
+**Destructure before repeated access.** When `obj.field` appears 2+ times in a function body, destructure once at the top — `const { freq, gain, q, type } = filter` — instead of repeating `filter.freq` at each call site.
 
 ### Component Structure
 
