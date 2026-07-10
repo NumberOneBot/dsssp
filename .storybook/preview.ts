@@ -1,4 +1,4 @@
-import type { Preview } from '@storybook/react'
+import type { Preview } from '@storybook/react-vite'
 import theme from './theme'
 
 const preview: Preview = {
@@ -7,11 +7,10 @@ const preview: Preview = {
       theme
     },
     backgrounds: {
-      default: 'dark',
-      values: [
-        { name: 'dark', value: '#000000' },
-        { name: 'light', value: '#FFFFFF' }
-      ]
+      options: {
+        dark: { name: 'dark', value: '#000000' },
+        light: { name: 'light', value: '#FFFFFF' }
+      }
     },
     toolbar: {
       show: false
@@ -49,6 +48,12 @@ const preview: Preview = {
           'Roadmap'
         ]
       }
+    }
+  },
+
+  initialGlobals: {
+    backgrounds: {
+      value: 'dark'
     }
   }
 }

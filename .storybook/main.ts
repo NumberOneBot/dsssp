@@ -8,8 +8,6 @@ const config: StorybookConfig = {
     '../src/**/*.docs.@(mdx|ts|tsx)'
   ],
   addons: [
-    '@storybook/addon-essentials',
-    '@storybook/addon-actions',
     {
       name: '@storybook/addon-docs',
       options: {

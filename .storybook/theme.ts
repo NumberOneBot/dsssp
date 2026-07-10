@@ -1,4 +1,4 @@
-import { create } from '@storybook/theming'
+import { create } from 'storybook/theming'
 import '@fontsource-variable/dm-sans'
 import '@fontsource-variable/reddit-mono'
 
