@@ -31,10 +31,10 @@ Our documentation includes a full-scale [demo project](https://github.com/Number
 
 Visit the [dsssp.io/demo](https://dsssp.io/demo/) to see it live.
 
-## Licensing
+## License
 
-This project is licensed under the [GNU AGPL-3.0 License](LICENSE), which ensures that any modifications or use of this library in networked services must be shared under the same license.
+[MIT](LICENSE) © Oleksiy Strelets — free to use in personal, open-source, and commercial projects.
 
 ## Contact
 
-If you have any questions, feedback, or would like to discuss commercial licensing, please reach out to the author at [alex.strelets@gmail.com](mailto:alex.strelets@gmail.com).
+If you have any questions or feedback, reach out to the author at [alex.strelets@gmail.com](mailto:alex.strelets@gmail.com).
