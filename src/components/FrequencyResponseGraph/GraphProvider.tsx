@@ -15,7 +15,7 @@ type GraphContextProps = {
   theme: GraphTheme
   scale: GraphScale
   logScale: LogScaleFunction
-  svgRef: React.RefObject<SVGSVGElement>
+  svgRef: React.RefObject<SVGSVGElement | null>
 }
 
 export const GraphContext = createContext<GraphContextProps | undefined>(
@@ -32,7 +32,7 @@ export const GraphProvider = ({
   theme
 }: {
   children: React.ReactNode
-  svgRef: React.RefObject<SVGSVGElement>
+  svgRef: React.RefObject<SVGSVGElement | null>
   theme: GraphTheme
   scale: GraphScale
   height: number
