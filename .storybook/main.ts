@@ -27,6 +27,13 @@ const config: StorybookConfig = {
 
   docs: {},
 
+  // Hide Storybook's onboarding UI (the "Guide" menu page and the sidebar
+  // checklist widget) — this is a published library, not a fresh project.
+  features: {
+    menuOnboardingChecklist: false,
+    sidebarOnboardingChecklist: false
+  },
+
   viteFinal: async (config) => ({
     ...config,
     plugins: await withoutVitePlugins(config.plugins, ['vite:dts']) // skip dts plugin
