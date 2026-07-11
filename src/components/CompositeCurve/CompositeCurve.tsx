@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, useCallback } from 'react'
+import { useMemo, useRef } from 'react'
 import {
   calcBiQuadCoefficients,
   calcCompositeMagnitudes,
@@ -50,49 +50,39 @@ export const CompositeCurve = ({
   const { scale, width } = useGraph()
   const { minFreq, maxFreq, sampleRate } = scale
 
-  const [magnitudesCache, setMagnitudesCache] = useState<
-    Record<string, Magnitude[]>
-  >({})
-
-  const memoizedGetFilterKey = useCallback((filter: GraphFilter) => {
-    return getFilterKey(filter)
-  }, [])
-
-  const activeKeys = useMemo(() => {
-    return new Set<string>(filters.map((f) => memoizedGetFilterKey(f)))
-  }, [filters, memoizedGetFilterKey])
-
-  const updateCache = useCallback(() => {
-    const newCache: Record<string, Magnitude[]> = { ...magnitudesCache }
-
-    Object.keys(newCache).forEach((cachedKey) => {
-      if (!activeKeys.has(cachedKey)) {
-        delete newCache[cachedKey]
-      }
-    })
-
-    filters.forEach((filter) => {
-      const key = memoizedGetFilterKey(filter)
-      if (!newCache[key]) {
-        const { type, freq, gain, q } = filter
-        const steps = width / resolutionFactor
-        const vars = calcBiQuadCoefficients(type, freq, gain, q, sampleRate)
-        newCache[key] =
-          calcMagnitudes(vars, steps, minFreq, maxFreq, sampleRate) || []
-      }
-    })
-
-    setMagnitudesCache(newCache)
-  }, [filters])
-
-  useEffect(() => {
-    updateCache()
-  }, [updateCache])
+  // Per-filter magnitude cache persisted across renders: dragging one filter
+  // recomputes only that filter's curve, not the whole set. The key combines
+  // the filter params with the graph geometry/scale, so a resize or scale
+  // change rebuilds the affected entries instead of reusing stale point counts.
+  const cache = useRef<Map<string, Magnitude[]>>(new Map()).current
 
   const compositeMagnitudes = useMemo(() => {
-    const allMags = Object.values(magnitudesCache).filter((m) => m.length)
-    return calcCompositeMagnitudes(allMags)
-  }, [magnitudesCache])
+    const steps = width / resolutionFactor
+    const geometryKey = `${steps}_${minFreq}_${maxFreq}_${sampleRate}`
+    const activeKeys = new Set<string>()
+
+    const magnitudes: Magnitude[][] = []
+    filters.forEach((filter) => {
+      const key = `${getFilterKey(filter)}@${geometryKey}`
+      activeKeys.add(key)
+
+      let entry = cache.get(key)
+      if (!entry) {
+        const { type, freq, gain, q } = filter
+        const vars = calcBiQuadCoefficients(type, freq, gain, q, sampleRate)
+        entry = calcMagnitudes(vars, steps, minFreq, maxFreq, sampleRate) || []
+        cache.set(key, entry)
+      }
+      if (entry.length) magnitudes.push(entry)
+    })
+
+    // drop entries whose filter or geometry is no longer on screen
+    cache.forEach((_, key) => {
+      if (!activeKeys.has(key)) cache.delete(key)
+    })
+
+    return calcCompositeMagnitudes(magnitudes)
+  }, [cache, filters, width, resolutionFactor, minFreq, maxFreq, sampleRate])
 
   if (!compositeMagnitudes.length) return null
 
