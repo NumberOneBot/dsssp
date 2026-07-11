@@ -1,9 +1,9 @@
 /// <reference types="vitest" />
+import { writeFileSync } from 'node:fs'
 import { join, resolve } from 'node:path'
 import react from '@vitejs/plugin-react-swc'
 import { defineConfig } from 'vite'
 import dts from 'vite-plugin-dts'
-import { viteStaticCopy } from 'vite-plugin-static-copy'
 
 import { peerDependencies } from './package.json'
 
@@ -15,16 +15,19 @@ export default defineConfig({
       insertTypesEntry: true, // add "types" entry to package.json
       outDir: 'dist', // output declarations in dist
       entryRoot: 'src',
-      exclude: ['src/test/**', 'src/**/*.stories.*']
+      exclude: ['src/test/**', 'src/**/*.stories.*', 'src/icons/font.d.ts']
     }), // Output .d.ts files
-    viteStaticCopy({
-      targets: [
-        {
-          src: 'src/icons/font.d.ts',
-          dest: ''
-        }
-      ]
-    })
+    {
+      // emit the `./font` types entry — declares the side-effect CSS import so
+      // `import 'dsssp/font'` type-checks for consumers
+      name: 'emit-font-dts',
+      closeBundle() {
+        writeFileSync(
+          resolve(__dirname, 'dist', 'font.d.ts'),
+          "declare module '*.css'\n"
+        )
+      }
+    }
   ],
   build: {
     target: 'esnext',
