@@ -1,7 +1,7 @@
 /// <reference types="vitest" />
 import { writeFileSync } from 'node:fs'
 import { join, resolve } from 'node:path'
-import react from '@vitejs/plugin-react-swc'
+import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vite'
 import dts from 'vite-plugin-dts'
 
