@@ -243,7 +243,7 @@ export function calcBiQuadCoefficients(
     //   A1 = A2 = B2 = 0
     //   break
     default:
-      console.error('calcBiQuadCoefficients: unknown filter type')
+      throw new Error(`calcBiQuadCoefficients: unknown filter type "${type}"`)
   }
   return { A0, A1, A2, B1, B2 }
 }
