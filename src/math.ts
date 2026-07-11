@@ -424,14 +424,13 @@ export const calcCompositeMagnitudes = (magnitudes: Magnitude[][]) => {
   for (let i = 0; i < magnitudes[0].length; i++) {
     const totalGain = magnitudes.reduce((sum, arr) => {
       const { magnitude } = arr[i] || {}
-      if (!magnitude) return sum
-      const filterGain = 10 ** (magnitude / 20)
-      //let gain = filterGain / Math.sqrt(1 + magnitudes[0][i].frequency ** 2);
-      return sum + 20 * Math.log10(filterGain)
+      if (magnitude === undefined) return sum
+      // composite response = sum of the individual filter gains, in dB
+      return sum + magnitude
     }, 0)
 
     const { frequency } = magnitudes[0][i] || {}
-    if (!frequency) continue
+    if (frequency === undefined) continue
 
     compositeMags.push({
       frequency,
