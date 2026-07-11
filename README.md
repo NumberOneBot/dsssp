@@ -9,7 +9,7 @@
 [![types included](https://img.shields.io/npm/types/dsssp.svg)](https://www.npmjs.com/package/dsssp)
 [![license MIT](https://img.shields.io/npm/l/dsssp.svg)](LICENSE)
 
-## React Library for Audio Processing and Visualization
+## React Library for Audio Equalizers & Filter Visualization
 
 [DSSSP](https://dsssp.io) is a React component library for visualizing and editing audio filters. These components are designed to serve as the core UI elements of audio production tools and interfaces, enabling users to interactively configure all filter parameters. Essentially, it is a conversion of proprietary audio processing and visualization tools from professional desktop software to a web-based environment.
 
