@@ -3,6 +3,7 @@ import {
   forwardRef,
   useId,
   useImperativeHandle,
+  useMemo,
   useRef,
   type CSSProperties
 } from 'react'
@@ -83,16 +84,25 @@ export const FrequencyResponseGraph = forwardRef<
   const {
     width,
     height,
-    scale = {},
-    theme = {},
+    scale,
+    theme,
     style = {},
     className = '',
     children
   } = props
-  const mergedTheme: GraphTheme = merge(defaultTheme, theme as GraphTheme)
-  const mergedScale: GraphScale = merge(defaultScale, scale, {
-    arrayMerge: (_, source) => source // overwrite arrays
-  })
+  // memoize the deep merges so theme/scale aren't re-cloned on every render
+  // (e.g. during drags); recompute only when the props actually change
+  const mergedTheme: GraphTheme = useMemo(
+    () => merge(defaultTheme, (theme ?? {}) as GraphTheme),
+    [theme]
+  )
+  const mergedScale: GraphScale = useMemo(
+    () =>
+      merge(defaultScale, scale ?? {}, {
+        arrayMerge: (_, source) => source // overwrite arrays
+      }),
+    [scale]
+  )
 
   const { minFreq, maxFreq } = mergedScale
   const logScale = getLogScaleFn(minFreq, maxFreq, width)
