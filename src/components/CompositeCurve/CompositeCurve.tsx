@@ -50,6 +50,20 @@ export const CompositeCurve = ({
   const { scale, width } = useGraph()
   const { minFreq, maxFreq, sampleRate } = scale
 
+  // ⚠️ DO NOT "modernize" this into a synchronous `useMemo`.
+  //
+  // The magnitude cache is deliberately held in state and populated from an
+  // `useEffect` (below) so the heavy `calcMagnitudes` / `calcCompositeMagnitudes`
+  // work runs AFTER commit/paint — off the critical path. During a drag or an
+  // animated transition, filters change every frame; deferring the recompute to
+  // an effect lets each frame paint immediately (the curve trails by one frame)
+  // instead of blocking on a full recompute before paint.
+  //
+  // Collapsing this into `useMemo` (computing during render) was tried in 0.7.2
+  // and caused a 2-3x drag/animation regression on curves with many filters
+  // (e.g. the landing splash). Reverted in 0.7.3. ESLint's react-hooks rule will
+  // flag the "setState in effect" pattern here — that flag is a false positive
+  // for this component; keep the effect.
   const [magnitudesCache, setMagnitudesCache] = useState<
     Record<string, Magnitude[]>
   >({})
