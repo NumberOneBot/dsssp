@@ -1,6 +1,7 @@
 import type React from 'react'
 import {
   forwardRef,
+  useId,
   useImperativeHandle,
   useRef,
   type CSSProperties
@@ -98,7 +99,9 @@ export const FrequencyResponseGraph = forwardRef<
 
   FrequencyResponseGraph.displayName = 'FrequencyResponseGraph'
 
-  const graphId = `frequency-response-graph-${String(Math.random()).slice(2, 9)}`
+  // useId() gives a stable, SSR-safe id; strip the ":" it contains so the
+  // value is valid inside the `#id` CSS selector below
+  const graphId = `frequency-response-graph-${useId().replace(/:/g, '')}`
   const resetStyles = `
   #${graphId} * {
     pointer-events: none;
