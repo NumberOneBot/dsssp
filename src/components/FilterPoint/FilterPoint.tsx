@@ -20,6 +20,9 @@ import { useGraph } from '../..'
 
 import '../../icons/font.css'
 
+// gains within ±this (dB) snap to exactly 0
+const gainSnapDb = 0.05
+
 export type FilterChangeEvent = GraphFilter & {
   index: number
   ended?: boolean
@@ -292,7 +295,7 @@ export const FilterPoint = ({
       circleRef.current.setAttributeNS(null, 'cy', String(cy))
       labelRef.current?.setAttributeNS(null, 'y', String(cy))
       const gain = stripTail(calcMagnitude(cy, minGain, maxGain, height))
-      moveGain.current = gain < 0.05 && gain > -0.05 ? 0 : gain
+      moveGain.current = gain < gainSnapDb && gain > -gainSnapDb ? 0 : gain
     }
 
     onChange?.({

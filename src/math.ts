@@ -14,6 +14,15 @@ export const fastFloor = (x: number) => x >> 0
 export const fastRound = (x: number) => (x + (x > 0 ? 0.5 : -0.5)) >> 0
 export const stripTail = (x: number) => fastRound(x * 100) / 100
 
+// dB floor for magnitudes that compute to -Infinity / NaN
+const minMagnitudeDb = -200
+// clamp for the filter gain input (dB)
+const maxGainDb = 120
+// horizontal overshoot (px) so the curve path extends past the graph edges
+const offscreenPx = 200
+// vertical clamp (px) keeping the curve just inside the bottom edge
+const curveBottomClampPx = 2
+
 export const getLogScaleFn = (
   minFreq: number,
   maxFreq: number,
@@ -68,7 +77,7 @@ export function calcBiQuadCoefficients(
   sampleRate = Math.max(1, sampleRate) // Minimum sample rate of 1 Hz
   frequency = Math.max(0, Math.min(frequency, sampleRate / 2)) // Nyquist limit
   Q = Math.max(0.0001, Q) // Avoid division by zero
-  peakGain = Math.max(-120, Math.min(peakGain, 120)) // Limit gain range
+  peakGain = Math.max(-maxGainDb, Math.min(peakGain, maxGainDb)) // Limit gain range
 
   const V = 10 ** (Math.abs(peakGain) / 20)
   const K = Math.tan((Math.PI * frequency) / sampleRate)
@@ -267,7 +276,7 @@ export function calcMagnitudeForFrequency(
         16 * 1 * B2 * phi * phi
     )
   y = (y * 10) / Math.LN10
-  if (y === Number.NEGATIVE_INFINITY || isNaN(y)) y = -200 // dB
+  if (y === Number.NEGATIVE_INFINITY || isNaN(y)) y = minMagnitudeDb
   return y
 }
 
@@ -386,11 +395,11 @@ export const plotCurve = (
 ) => {
   const { minGain, maxGain } = scale
   const centerY = getCenterLine(minGain, maxGain, height)
-  let path = `M -200 ${centerY}`
+  let path = `M ${-offscreenPx} ${centerY}`
   points.map((point) => {
-    path += ` L ${point.x} ${point.y > height + 2 ? height + 2 : point.y}`
+    path += ` L ${point.x} ${point.y > height + curveBottomClampPx ? height + curveBottomClampPx : point.y}`
   })
-  path += ` L ${width + 200} ${centerY}`
+  path += ` L ${width + offscreenPx} ${centerY}`
   return path
 }
 
