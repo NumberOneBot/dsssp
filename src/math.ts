@@ -285,6 +285,13 @@ export function calcAmplitudeForFrequency(gain: number) {
   return amplitude
 }
 
+/**
+ * Population standard deviation of a set of values.
+ *
+ * Exposed as a public helper for consumers building their own analysis on top
+ * of the graph's magnitude data (e.g. smoothing thresholds or curve-flatness
+ * metrics). Not used internally by the library.
+ */
 export function calcStandardDeviation(values: number[]) {
   const mean = values.reduce((acc, val: number) => acc + val, 0) / values.length
   const squaredDiffs = values.map((val) => (val - mean) ** 2)
