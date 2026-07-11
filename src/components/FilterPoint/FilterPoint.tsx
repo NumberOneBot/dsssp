@@ -467,7 +467,9 @@ export const FilterPoint = ({
           fontSize={labelFontSize}
           fontFamily={labelFontFamily}
           style={{ ...labelStyle }}
-          dangerouslySetInnerHTML={{ __html: label }}
+          {...(showIcon
+            ? { dangerouslySetInnerHTML: { __html: label } }
+            : { children: label })}
         />
       )}
     </>
