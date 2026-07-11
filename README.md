@@ -1,11 +1,13 @@
-![](assets/screenshot.png)
-![](assets/transition.gif)
+![DSSSP frequency-response graph screenshot](https://raw.githubusercontent.com/NumberOneBot/dsssp/main/assets/screenshot.png)
+![DSSSP animated filter-curve transitions](https://raw.githubusercontent.com/NumberOneBot/dsssp/main/assets/transition.gif)
 
 # DSSSP
 
 [![npm latest package](https://img.shields.io/npm/v/dsssp/latest.svg)](https://www.npmjs.com/package/dsssp)
 [![npm downloads](https://img.shields.io/npm/dt/dsssp.svg)](https://www.npmjs.com/package/dsssp)
 [![gzipped](https://img.shields.io/bundlejs/size/dsssp)](https://www.npmjs.com/package/dsssp)
+[![types included](https://img.shields.io/npm/types/dsssp.svg)](https://www.npmjs.com/package/dsssp)
+[![license MIT](https://img.shields.io/npm/l/dsssp.svg)](LICENSE)
 
 ## React Library for Audio Processing and Visualization
 
@@ -22,6 +24,21 @@ The library's rendering system is based on SVG and provides a logarithmic freque
 - **Animated transitions** between filter curves (`animate` / `easing` / `duration` props)
 - **Themeable** and **TypeScript-first**
 - Works with **React 18 and 19** (the only peer dependency)
+
+## Components
+
+- **`FrequencyResponseGraph`** — SVG container and context (scale, theme, dimensions) for everything below
+- **`FilterCurve`** — the response curve of a single filter
+- **`CompositeCurve`** — the summed response of all filters
+- **`FilterPoint`** — draggable control point for a filter's frequency, gain and Q
+- **`FilterGradient`** — gradient fill under a curve
+- **`FilterIcon`** — filter-type icon glyph
+- **`FrequencyResponseCurve`** — render a precomputed magnitude array
+- **`PointerTracker`** — crosshair readout that follows the cursor
+
+## Use cases
+
+Parametric EQ interfaces, audio-plugin and DAW-style tools, crossover and filter designers, and teaching DSP — anywhere you need an interactive frequency-response graph on the web.
 
 ## Installation
 
