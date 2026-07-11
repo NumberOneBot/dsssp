@@ -250,11 +250,11 @@ export function calcBiQuadCoefficients(
 
 export function calcMagnitudeForFrequency(
   vars: BiQuadCoefficients,
-  width: number,
+  frequency: number,
   sampleRate: number = 44100
 ) {
   const { A0, A1, A2, B1, B2 } = vars
-  const phi = Math.sin((2 * Math.PI * width) / sampleRate / 2) ** 2
+  const phi = Math.sin((2 * Math.PI * frequency) / sampleRate / 2) ** 2
   let y =
     Math.log(
       (A0 + A1 + A2) ** 2 -
