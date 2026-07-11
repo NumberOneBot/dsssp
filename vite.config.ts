@@ -14,7 +14,8 @@ export default defineConfig({
       rollupTypes: false, // disable inline declarations
       insertTypesEntry: true, // add "types" entry to package.json
       outDir: 'dist', // output declarations in dist
-      entryRoot: 'src'
+      entryRoot: 'src',
+      exclude: ['src/test/**', 'src/**/*.stories.*']
     }), // Output .d.ts files
     viteStaticCopy({
       targets: [
