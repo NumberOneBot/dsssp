@@ -1,5 +1,5 @@
 /* eslint-disable no-param-reassign */
-import { useEffect, useMemo, useRef, useState, type CSSProperties } from 'react'
+import { useMemo, useRef, useState, type CSSProperties } from 'react'
 
 import {
   calcFrequency,
@@ -385,24 +385,15 @@ export const FilterPoint = ({
     onLeave?.({ ...filter, index })
   }
 
-  useEffect(() => {
-    const circle = circleRef.current
-    if (!wheelQ || !circle) return
+  const scrollQ = (e: WheelEvent) => {
+    e.preventDefault()
+    let newQ = filterQ
+    newQ += e.deltaY > 0 ? 0.1 : -0.1
+    newQ = stripTail(limitRange(newQ, 0.1, 20))
+    onChange?.({ index, ...filter, q: newQ, ended: true })
+  }
 
-    const scrollQ = (e: WheelEvent) => {
-      e.preventDefault()
-      const newQ = stripTail(
-        limitRange(filterQ + (e.deltaY > 0 ? 0.1 : -0.1), 0.1, 20)
-      )
-      onChange?.({ index, ...filter, q: newQ, ended: true })
-    }
-
-    // Native, non-passive listener so preventDefault() can stop the page from
-    // scrolling while adjusting Q — React's synthetic onWheel is passive and
-    // would ignore preventDefault().
-    circle.addEventListener('wheel', scrollQ, { passive: false })
-    return () => circle.removeEventListener('wheel', scrollQ)
-  }, [wheelQ, filterQ, index, filter, onChange])
+  if (wheelQ) circleRef.current?.addEventListener('wheel', scrollQ)
 
   if (type === 'BYPASS') return null
 
