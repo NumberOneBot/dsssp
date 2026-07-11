@@ -5,11 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [0.7.2] - 2026-07-11
+
+### Fixed
+
+- `FilterPoint` no longer re-attaches its wheel (Q-adjust) listener on every render — it is now managed in an effect with cleanup, fixing listener accumulation and stale-value closures
+- `CompositeCurve` now rebuilds its magnitude cache when the graph is resized or the scale changes (the cache previously keyed only on filters, leaving a stale curve after a resize)
 
 ### Changed
 
 - Reverted the 0.7.1 composite-magnitude guard back to the original falsy check (the change was output-neutral)
+- The published bundle is now minified
+- Documented `calcStandardDeviation` as a public helper
+- Dev tooling: switched to `@vitejs/plugin-react`, disabled Storybook's onboarding UI, and aligned the README/Introduction taglines
+
+_No public API changes._
 
 ## [0.7.1] - 2026-07-11
 
