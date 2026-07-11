@@ -66,6 +66,13 @@ export type FrequencyResponseGraphProps = {
    * Additional inline styles to apply to the graph container
    */
   style?: CSSProperties
+  /**
+   * Accessible label announced by screen readers for the graph.
+   * The graph is exposed as a single `role="img"`; pass a description that
+   * fits the data being shown (e.g. "8-band parametric EQ response").
+   * @default 'Frequency response graph'
+   */
+  ariaLabel?: string
 }
 
 /**
@@ -88,6 +95,7 @@ export const FrequencyResponseGraph = forwardRef<
     theme,
     style = {},
     className = '',
+    ariaLabel = 'Frequency response graph',
     children
   } = props
   // memoize the deep merges so theme/scale aren't re-cloned on every render
@@ -121,6 +129,8 @@ export const FrequencyResponseGraph = forwardRef<
     <svg
       ref={ref}
       id={graphId}
+      role="img"
+      aria-label={ariaLabel}
       className={className}
       viewBox={`0 0 ${width} ${height}`}
       style={{
