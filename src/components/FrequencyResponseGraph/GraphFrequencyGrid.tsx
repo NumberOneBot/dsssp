@@ -17,7 +17,8 @@ export const GraphFrequencyGrid = () => {
   const strokeDasharray = '1,2'
 
   return (
-    <>
+    // decorative frequency grid + octave labels — hidden from assistive tech
+    <g aria-hidden="true">
       {ticks.slice(1, -1).map((tick) => {
         const tickX = logScale.x(tick)
 
@@ -55,6 +56,6 @@ export const GraphFrequencyGrid = () => {
           </text>
         )
       })}
-    </>
+    </g>
   )
 }

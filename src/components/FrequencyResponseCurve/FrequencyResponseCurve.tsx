@@ -73,6 +73,7 @@ export const FrequencyResponseCurve = ({
 
   return (
     <path
+      aria-hidden="true"
       d={animate ? fromPath : currentPath}
       stroke={curveColor}
       strokeWidth={curveWidth}

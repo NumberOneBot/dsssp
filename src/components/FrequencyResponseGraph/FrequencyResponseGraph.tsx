@@ -67,9 +67,10 @@ export type FrequencyResponseGraphProps = {
    */
   style?: CSSProperties
   /**
-   * Accessible label announced by screen readers for the graph.
-   * The graph is exposed as a single `role="img"`; pass a description that
-   * fits the data being shown (e.g. "8-band parametric EQ response").
+   * Accessible label for the graph, announced by screen readers. The graph is
+   * a labelled `role="group"`; decorative grids/curves are hidden and each
+   * `FilterPoint` inside announces its own settings. Pass a label that names
+   * the control (e.g. "8-band parametric EQ").
    * @default 'Frequency response graph'
    */
   ariaLabel?: string
@@ -129,7 +130,7 @@ export const FrequencyResponseGraph = forwardRef<
     <svg
       ref={ref}
       id={graphId}
-      role="img"
+      role="group"
       aria-label={ariaLabel}
       className={className}
       viewBox={`0 0 ${width} ${height}`}

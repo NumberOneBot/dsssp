@@ -30,7 +30,8 @@ export const GraphGainGrid = () => {
   const strokeDasharray = '1,2'
 
   return (
-    <>
+    // decorative dB grid + axis labels — hidden from assistive tech
+    <g aria-hidden="true">
       {dBs.slice(0, -1).map((tick, index) => {
         if (index === 0) return null
         const tickY = `${(index / (dBs.length - 1)) * 100}%`
@@ -84,6 +85,6 @@ export const GraphGainGrid = () => {
           dB
         </text>
       )}
-    </>
+    </g>
   )
 }
