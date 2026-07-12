@@ -5,12 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.8.0] - 2026-07-12
+
+### Added
+
+- Accessibility — the frequency-response graph is now legible to screen readers. The root SVG is a labelled `role="group"` (new `ariaLabel` prop on `FrequencyResponseGraph`, default `"Frequency response graph"`), and every `FilterPoint` is announced as an image describing its current settings (type, frequency, gain, Q). Decorative grids, response curves, and the pointer readout are hidden from assistive tech.
+
+### Fixed
+
+- Reverted the 0.7.2 `CompositeCurve` magnitude-cache change, which caused a 2-3x drag/animation performance regression. The 0.7.1 deferred-effect caching is restored, and a code comment now documents why that work must stay off the render path.
+
+_Adds the `ariaLabel` prop to `FrequencyResponseGraph`; no breaking changes._
+
 ## [0.7.2] - 2026-07-11
 
 ### Fixed
 
 - `FilterPoint` no longer re-attaches its wheel (Q-adjust) listener on every render — it is now managed in an effect with cleanup, fixing listener accumulation and stale-value closures
-- `CompositeCurve` now rebuilds its magnitude cache when the graph is resized or the scale changes (the cache previously keyed only on filters, leaving a stale curve after a resize)
+- `CompositeCurve` now rebuilds its magnitude cache when the graph is resized or the scale changes (the cache previously keyed only on filters, leaving a stale curve after a resize) — **reverted in 0.8.0: this change caused a drag/animation performance regression**
 
 ### Changed
 
